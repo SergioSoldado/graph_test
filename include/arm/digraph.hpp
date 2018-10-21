@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @brief Declaration of DiGraph
+ */
+
 #include <algorithm>
 #include <map>
 #include <set>
@@ -10,6 +14,11 @@
 
 namespace arm {
 
+/**
+ * @brief Implements directional graph.
+ * @tparam N Node data type.
+ * @tparam E Edge data type.
+ */
 template <typename N, typename E>
 class DiGraph {
 
@@ -17,7 +26,14 @@ class DiGraph {
   using NodesList = std::set<N>;  //! type declaration for nodes collection
   using EdgesList = std::map<N, std::map<N, E>>;  //! type declaration for edges collection
 
+  /**
+   * @brief default Ctor
+   */
   DiGraph() = default;
+
+  /**
+   * @brief default Dtor
+   */
   ~DiGraph() = default;
 
   /**
@@ -58,18 +74,31 @@ class DiGraph {
    * @brief Getter the edges of a specified node.
    * @param n Node to get edges for.
    * @return Node's edges.
-   * @throws Exception if graph doesn't contain node.
+   * @throws std::out_of_range if graph doesn't contain the specified node.
    */
   const auto& getEdges(const N& n) const {
     return _edges.at(n);
   }
 
+  /**
+   * @brief Verify if two nodes are connected.
+   * @param src Edge's source node.
+   * @param target Edge's target node.
+   * @return true if nodes are connected, false otherwise.
+   */
   bool isConnected(const N& src, const N& target) const {
     auto e = _edges.at(src);
     auto t = e.find(target);
     return t != e.end();
   }
 
+  /**
+   * @brief Return the edge value of the specified pair of nodes.
+   * @param src Edge's source node.
+   * @param target Edge's target node.
+   * @return Edge Edge connection if any.
+   * @throws std::out_of_range if graph doesn't contain the specified node.
+   */
   E getEdge(const N& src, const N& target) const {
     return _edges.at(src).find(target)->second;
   }
