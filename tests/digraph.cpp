@@ -40,11 +40,16 @@ TEST(graph, add_duplicate_fail) {
 
 TEST(graph, connect) {
   DiGraph<int, int> g;
-  g.add(0, 1, 2);
-  ASSERT_EQ(g.getNodes().size(), 2);
-  ASSERT_EQ(g.getEdges(0).size(), 1);
-  ASSERT_EQ(g.getEdges(0).at(1), 2);
-  ASSERT_EQ(g.getEdges(1).size(), 0);
+  g.add(0, 1, 1);
+  g.add(0, 2, 2);
+  g.add(0, 3, 3);
+  g.add(1, 3, 4);
+  ASSERT_EQ(g.getNodes().size(), 3);
+  ASSERT_EQ(g.getEdges(0).size(), 3);
+  ASSERT_EQ(g.getEdges(0).at(1), 1);
+  ASSERT_EQ(g.getEdges(0).at(2), 2);
+  ASSERT_EQ(g.getEdges(0).at(3), 3);
+  ASSERT_EQ(g.getEdges(1).at(3), 4);
 }
 
 TEST(graph, get_invalid_edge) {
@@ -56,5 +61,15 @@ TEST(graph, get_invalid_edge) {
 TEST(graph, is_connected) {
   DiGraph<int, int> g;
   g.add(0);
-//  g.add(1, 2)
+  g.add(1, 2, 2);
+  ASSERT_TRUE(g.isConnected(1, 2));
+  ASSERT_FALSE(g.isConnected(0, 1));
+}
+
+TEST(graph, get_edge) {
+  DiGraph<int, int> g;
+  g.add(1, 2, 2);
+  g.add(1, 3, 7);
+  ASSERT_EQ(g.getEdge(1, 2), 2);
+  ASSERT_EQ(g.getEdge(1, 3), 7);
 }
